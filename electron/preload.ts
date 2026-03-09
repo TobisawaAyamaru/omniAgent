@@ -66,6 +66,26 @@ type MCPTool = {
   inputSchema: string
 }
 
+type FileListResult = {
+  dir: string
+  entries: Array<{ name: string; type: 'dir' | 'file' }>
+}
+
+type FileReadResult = {
+  path: string
+  content: string
+}
+
+type FileSearchResult = {
+  keyword: string
+  dir: string
+  matches: string[]
+}
+
+type FileRootsResult = {
+  roots: string[]
+}
+
 const omni = {
   getUIState: () => ipcRenderer.invoke('omni:get-ui-state') as Promise<UIState>,
   setMiniMode: (next: boolean) => ipcRenderer.invoke('omni:set-mini-mode', next) as Promise<{ isMiniMode: boolean }>,
@@ -89,6 +109,13 @@ const omni = {
   listMCPTools: (serverId?: string) => ipcRenderer.invoke('mcp:list-tools', serverId) as Promise<MCPTool[]>,
   callMCPTool: (payload: { serverId: string; toolName: string; input?: Record<string, unknown> }) =>
     ipcRenderer.invoke('mcp:call-tool', payload) as Promise<{ serverId: string; toolName: string; output: Record<string, unknown> }>,
+
+  fileGetRoots: () => ipcRenderer.invoke('file:get-roots') as Promise<FileRootsResult>,
+  fileAddRoot: (rootDir: string) => ipcRenderer.invoke('file:add-root', rootDir) as Promise<FileRootsResult>,
+  fileRemoveRoot: (rootDir: string) => ipcRenderer.invoke('file:remove-root', rootDir) as Promise<FileRootsResult>,
+  fileList: (dir?: string) => ipcRenderer.invoke('file:list', dir) as Promise<FileListResult>,
+  fileRead: (filePath: string) => ipcRenderer.invoke('file:read', filePath) as Promise<FileReadResult>,
+  fileSearch: (payload: { keyword: string; dir?: string }) => ipcRenderer.invoke('file:search', payload) as Promise<FileSearchResult>,
 }
 
 contextBridge.exposeInMainWorld('omni', omni)

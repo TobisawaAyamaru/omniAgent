@@ -8,6 +8,7 @@ import { getTaskDB, registerTaskHandlers } from './ipc/task-handler'
 import { registerConfigHandlers } from './ipc/config-handler'
 import { registerChatHandlers } from './ipc/chat-handler'
 import { registerMCPHandlers } from './ipc/mcp-handler'
+import { registerFileHandlers } from './ipc/file-handler'
 import { ConfigStore } from './services/config-store'
 import { ClaudeService } from './services/claude-service'
 import { MCPService } from './services/mcp-service'
@@ -108,6 +109,7 @@ app.whenReady().then(() => {
   registerConfigHandlers(configStore)
   registerChatHandlers(claudeService, agentService)
   registerMCPHandlers(mcpService)
+  registerFileHandlers(fileTools)
 })
 
 app.on('will-quit', () => {

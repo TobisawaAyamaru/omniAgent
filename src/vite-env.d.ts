@@ -66,6 +66,26 @@ type MCPTool = {
   inputSchema: string
 }
 
+type FileListResult = {
+  dir: string
+  entries: Array<{ name: string; type: 'dir' | 'file' }>
+}
+
+type FileReadResult = {
+  path: string
+  content: string
+}
+
+type FileSearchResult = {
+  keyword: string
+  dir: string
+  matches: string[]
+}
+
+type FileRootsResult = {
+  roots: string[]
+}
+
 declare global {
   interface Window {
     omni: {
@@ -94,6 +114,12 @@ declare global {
         toolName: string
         output: Record<string, unknown>
       }>
+      fileGetRoots: () => Promise<FileRootsResult>
+      fileAddRoot: (rootDir: string) => Promise<FileRootsResult>
+      fileRemoveRoot: (rootDir: string) => Promise<FileRootsResult>
+      fileList: (dir?: string) => Promise<FileListResult>
+      fileRead: (filePath: string) => Promise<FileReadResult>
+      fileSearch: (payload: { keyword: string; dir?: string }) => Promise<FileSearchResult>
     }
   }
 }
