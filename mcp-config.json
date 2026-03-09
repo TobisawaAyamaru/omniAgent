@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "web-search": {
+      "args": [
+        "open-websearch@1.2.5"
+      ],
+      "command": "npx"
+    }
+  }
+}
